@@ -1,0 +1,15 @@
+{
+    "name": "inxeniux",
+    "author": "Luis Daniel Corona Rico",
+    "exports": "./server/dist/index.js",
+    "scripts": {
+        "preinstall": "cd server && npm install",
+        "dev": "nodemon ./server/dist/index.js",
+        "build:server": "cd server && npm run clean:build && npm run build",
+        "start": "npm run build:server && node ./server/dist/index.js"
+    },
+    "engines": {
+        "node": "^16.20.0"
+    },
+    "type": "module"
+}
