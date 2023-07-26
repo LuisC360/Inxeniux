@@ -1,4 +1,5 @@
 import express, {Express, Request} from 'express';
+import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import ApiRouter from './src/routers/ApiRouter';
@@ -21,6 +22,8 @@ app.use(
 );
 
 app.options('*', cors());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
 mongoose
     .set('strictQuery', true)

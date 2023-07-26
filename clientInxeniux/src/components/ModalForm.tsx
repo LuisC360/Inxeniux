@@ -2,13 +2,15 @@ import React, {useState} from 'react';
 import {Dialog, DialogContent} from '@material-ui/core';
 import {Box, Button, Checkbox, FormControlLabel, FormGroup, MenuItem, Stack, TextField, Typography} from '@mui/material';
 import {genders, roomType, monthlyIncome, yearlyTravels, favoriteBooks} from '../constants/constants';
+import {Client} from '../types';
 
 interface ModalFormProps {
     open: boolean;
-    handleClose: () => void;
+    onClosePress: () => void;
+    onCreatePress: (client: Client, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
-export default function ModalForm({open, handleClose}: ModalFormProps): JSX.Element {
+export default function ModalForm({open, onClosePress, onCreatePress}: ModalFormProps): JSX.Element {
     // User
     const [name, setName] = useState('');
     const [firstLastName, setFirstLastName] = useState('');
@@ -91,6 +93,19 @@ export default function ModalForm({open, handleClose}: ModalFormProps): JSX.Elem
                 setPreferredDestinations((prevDesinations) => prevDesinations.filter((destination) => destination !== newValue));
             }
         }
+    };
+
+    const handleCreate = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        const newClient: Client = {
+            _id: '0',
+            name: name,
+            first_last_name: firstLastName,
+            second_last_name: secondLastName,
+            age: age,
+            gender: gender
+        };
+
+        onCreatePress(newClient, event);
     };
 
     return (
@@ -369,11 +384,11 @@ export default function ModalForm({open, handleClose}: ModalFormProps): JSX.Elem
                         </TextField>
                     </FormGroup>
                 </Box>
-                <Stack spacing={2} direction='row' flexDirection={'row-reverse'}>
+                <Stack spacing={2} direction='row' flexDirection={'row-reverse'} onClick={(e) => handleCreate(e)}>
                     <Button variant='contained' style={{marginLeft: 4}}>
                         Guardar
                     </Button>
-                    <Button variant='contained' style={{marginRight: 4}} onClick={handleClose}>
+                    <Button variant='contained' style={{marginRight: 4}} onClick={onClosePress}>
                         Cancelar
                     </Button>
                 </Stack>

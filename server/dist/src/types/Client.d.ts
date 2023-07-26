@@ -8,7 +8,7 @@ export interface IClient extends Document {
     second_last_name: string;
     age: number;
     gender: Gender;
-    address: Types.ObjectId;
-    interests: Types.ObjectId;
+    address?: Types.ObjectId;
+    interests?: Types.ObjectId;
 }
 export {};

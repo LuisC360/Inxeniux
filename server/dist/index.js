@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const body_parser_1 = __importDefault(require("body-parser"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const cors_1 = __importDefault(require("cors"));
 const ApiRouter_1 = __importDefault(require("./src/routers/ApiRouter"));
@@ -30,6 +31,8 @@ app.use((0, cors_1.default)({
     }
 }));
 app.options('*', (0, cors_1.default)());
+app.use(body_parser_1.default.urlencoded({ extended: false }));
+app.use(body_parser_1.default.json());
 mongoose_1.default
     .set('strictQuery', true)
     .connect(`mongodb+srv://${config_1.default.MONGO_USER}:${config_1.default.MONGO_PASSWORD}@cluster0.kcjhflf.mongodb.net/${config_1.default.MONGO_DB}?retryWrites=true&w=majority`)

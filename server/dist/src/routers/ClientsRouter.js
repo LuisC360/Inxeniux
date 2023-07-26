@@ -29,6 +29,8 @@ router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 // add
 router.post('/add-client', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const client = req.body;
+        (0, ClientsController_1.createClient)(client.name, client.first_last_name, client.second_last_name, client.age, client.gender);
     }
     catch (error) {
         (0, ErrorController_1.errorCallback)(error, res);
@@ -45,6 +47,8 @@ router.put('/edit-client', (req, res) => __awaiter(void 0, void 0, void 0, funct
 // delete
 router.delete('/delete-client', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const clientsIds = req.body;
+        (0, ClientsController_1.deleteClients)(clientsIds);
     }
     catch (error) {
         (0, ErrorController_1.errorCallback)(error, res);

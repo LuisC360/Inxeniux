@@ -4,13 +4,14 @@ import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogT
 interface DeleteDialogProps {
     open: boolean;
     numSelected: number;
-    handleClose: () => void;
+    onPressClose: () => void;
+    onPressAccept: () => void;
 }
 
-export default function DeleteDialog({open, numSelected, handleClose}: DeleteDialogProps): JSX.Element {
+export default function DeleteDialog({open, numSelected, onPressClose, onPressAccept}: DeleteDialogProps): JSX.Element {
     return (
         <div>
-            <Dialog open={open} onClose={handleClose} aria-labelledby='alert-dialog-title' aria-describedby='alert-dialog-description'>
+            <Dialog open={open} onClose={onPressClose} aria-labelledby='alert-dialog-title' aria-describedby='alert-dialog-description'>
                 <DialogTitle id='alert-dialog-title'>{'Eliminar cliente'}</DialogTitle>
                 <DialogContent>
                     {numSelected < 2 ? (
@@ -22,8 +23,8 @@ export default function DeleteDialog({open, numSelected, handleClose}: DeleteDia
                     )}
                 </DialogContent>
                 <DialogActions>
-                    <Button>Aceptar</Button>
-                    <Button onClick={handleClose} autoFocus>
+                    <Button onClick={onPressAccept}>Aceptar</Button>
+                    <Button onClick={onPressClose} autoFocus>
                         Cancelar
                     </Button>
                 </DialogActions>

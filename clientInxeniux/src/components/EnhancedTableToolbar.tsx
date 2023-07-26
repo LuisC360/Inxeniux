@@ -1,23 +1,39 @@
 import React, {useState} from 'react';
 import {Toolbar, Typography, IconButton, Tooltip, alpha} from '@mui/material';
 import {AddCircleOutlineOutlined, Delete, FilterList, Edit} from '@mui/icons-material';
+import {useCreateClient} from '../hooks/Clients/useCreateClient';
+import {useDeleteClients} from '../hooks/Clients/useDeleteClients';
 import ModalForm from './ModalForm';
 import DeleteDialog from './DeleteDialog';
+import {Client} from '../types';
 
 interface EnhancedTableToolbarProps {
     numSelected: number;
+    selected: string[];
 }
 
-export default function EnhancedTableToolbar(props: EnhancedTableToolbarProps): JSX.Element {
-    const {numSelected} = props;
+export default function EnhancedTableToolbar({numSelected, selected}: EnhancedTableToolbarProps): JSX.Element {
+    const {mutate: createClient} = useCreateClient();
+    const {mutate: deleteClients} = useDeleteClients();
     const [showModalForm, setShowModalForm] = useState(false);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
-    const onPressAddButton = () => {
+    const handleShowModal = () => {
         setShowModalForm(!showModalForm);
     };
 
     const onPressDeleteOrCancel = () => {
+        setShowDeleteDialog(!showDeleteDialog);
+    };
+
+    const handleCreateClient = (client: Client, event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
+        event.preventDefault();
+        createClient(client);
+        setShowModalForm(!showModalForm);
+    };
+
+    const handleDeleteClients = () => {
+        deleteClients(selected);
         setShowDeleteDialog(!showDeleteDialog);
     };
 
@@ -41,14 +57,14 @@ export default function EnhancedTableToolbar(props: EnhancedTableToolbarProps): 
                     </Typography>
                 ) : null}
                 <Tooltip title='Add'>
-                    <IconButton onClick={onPressAddButton}>
+                    <IconButton onClick={handleShowModal}>
                         <AddCircleOutlineOutlined />
                     </IconButton>
                 </Tooltip>
                 {numSelected > 0 && numSelected < 2 ? (
                     <>
                         <Tooltip title='Edit'>
-                            <IconButton onClick={onPressAddButton}>
+                            <IconButton onClick={handleShowModal}>
                                 <Edit />
                             </IconButton>
                         </Tooltip>
@@ -72,8 +88,13 @@ export default function EnhancedTableToolbar(props: EnhancedTableToolbarProps): 
                     </Tooltip>
                 )}
             </Toolbar>
-            <ModalForm open={showModalForm} handleClose={onPressAddButton} />
-            <DeleteDialog open={showDeleteDialog} numSelected={numSelected} handleClose={onPressDeleteOrCancel} />
+            <ModalForm open={showModalForm} onClosePress={handleShowModal} onCreatePress={handleCreateClient} />
+            <DeleteDialog
+                open={showDeleteDialog}
+                numSelected={numSelected}
+                onPressClose={onPressDeleteOrCancel}
+                onPressAccept={handleDeleteClients}
+            />
         </>
     );
 }

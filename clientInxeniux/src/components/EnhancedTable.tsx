@@ -23,7 +23,7 @@ interface EnhancedTableProps {
 export default function EnhancedTable({rows}: EnhancedTableProps): JSX.Element {
     const [order, setOrder] = useState<Order>('asc');
     const [orderBy, setOrderBy] = useState<keyof Client>('age');
-    const [selected, setSelected] = useState<readonly string[]>([]);
+    const [selected, setSelected] = useState<string[]>([]);
     const [page, setPage] = useState(0);
     const [dense, setDense] = useState(false);
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -74,7 +74,7 @@ export default function EnhancedTable({rows}: EnhancedTableProps): JSX.Element {
 
     const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
         const selectedIndex = selected.indexOf(name);
-        let newSelected: readonly string[] = [];
+        let newSelected: string[] = [];
 
         if (selectedIndex === -1) {
             newSelected = newSelected.concat(selected, name);
@@ -116,7 +116,7 @@ export default function EnhancedTable({rows}: EnhancedTableProps): JSX.Element {
     return (
         <Box sx={{width: '100%'}}>
             <Paper sx={{width: '100%', mb: 2}}>
-                <EnhancedTableToolbar numSelected={selected.length} />
+                <EnhancedTableToolbar numSelected={selected.length} selected={selected} />
                 <TableContainer>
                     <Table sx={{minWidth: 750}} aria-labelledby='tableTitle' size={dense ? 'small' : 'medium'}>
                         <EnhancedTableHead
@@ -129,17 +129,17 @@ export default function EnhancedTable({rows}: EnhancedTableProps): JSX.Element {
                         />
                         <TableBody>
                             {visibleRows.map((row, index) => {
-                                const isItemSelected = isSelected(row.name);
+                                const isItemSelected = isSelected(row._id);
                                 const labelId = `enhanced-table-checkbox-${index}`;
 
                                 return (
                                     <TableRow
                                         hover
-                                        onClick={(event) => handleClick(event, row.name)}
+                                        onClick={(event) => handleClick(event, row._id)}
                                         role='checkbox'
                                         aria-checked={isItemSelected}
                                         tabIndex={-1}
-                                        key={row.name}
+                                        key={row._id}
                                         selected={isItemSelected}
                                         sx={{cursor: 'pointer'}}
                                     >

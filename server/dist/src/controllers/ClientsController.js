@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createClient = exports.getAllClients = void 0;
+exports.deleteClients = exports.createClient = exports.getAllClients = void 0;
 const Client_1 = __importDefault(require("../models/Client"));
 function getAllClients() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -20,17 +20,25 @@ function getAllClients() {
     });
 }
 exports.getAllClients = getAllClients;
-function createClient(name, first_last_name, second_last_name, age, gender, address) {
+function createClient(name, first_last_name, second_last_name, age, gender) {
     return __awaiter(this, void 0, void 0, function* () {
-        // const newClient = {
-        //     name,
-        //     first_last_name,
-        //     second_last_name,
-        //     age,
-        //     gender,
-        //     address
-        // };
-        // return await Client.create(newClient);
+        const newClient = {
+            name,
+            first_last_name,
+            second_last_name,
+            age,
+            gender
+        };
+        return yield Client_1.default.create(newClient);
     });
 }
 exports.createClient = createClient;
+function deleteClients(clientIds) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const ids = [...clientIds];
+        for (let i = 0; i < ids.length; i += 1) {
+            yield Client_1.default.deleteOne({ _id: clientIds[i] });
+        }
+    });
+}
+exports.deleteClients = deleteClients;
