@@ -22,9 +22,19 @@ router.post('/add-client', async (req, res) => {
 });
 
 // edit
-// router.put();
+router.put('/edit-client', async (req, res) => {
+    try {
+    } catch (error: unknown) {
+        errorCallback(error, res);
+    }
+});
 
 // delete
-// router.delete();
+router.delete('/delete-client', async (req, res) => {
+    try {
+    } catch (error: unknown) {
+        errorCallback(error, res);
+    }
+});
 
 export default router;

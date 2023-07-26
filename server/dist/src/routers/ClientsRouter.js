@@ -35,7 +35,19 @@ router.post('/add-client', (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 }));
 // edit
-// router.put();
+router.put('/edit-client', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+    }
+    catch (error) {
+        (0, ErrorController_1.errorCallback)(error, res);
+    }
+}));
 // delete
-// router.delete();
+router.delete('/delete-client', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+    }
+    catch (error) {
+        (0, ErrorController_1.errorCallback)(error, res);
+    }
+}));
 exports.default = router;

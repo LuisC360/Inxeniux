@@ -9,5 +9,6 @@ export interface IClient extends Document {
     age: number;
     gender: Gender;
     address: Types.ObjectId;
+    interests: Types.ObjectId;
 }
 export {};
