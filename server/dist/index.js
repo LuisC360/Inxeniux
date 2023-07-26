@@ -18,6 +18,17 @@ const cors_1 = __importDefault(require("cors"));
 const ApiRouter_1 = __importDefault(require("./src/routers/ApiRouter"));
 const config_1 = __importDefault(require("./config/config"));
 const app = (0, express_1.default)();
+const whitelist = ['http://localhost:3000'];
+app.use((0, cors_1.default)({
+    origin: function (origin, callback) {
+        if ((origin != null && whitelist.indexOf(origin) !== -1) || origin == null) {
+            callback(null, true);
+        }
+        else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    }
+}));
 app.options('*', (0, cors_1.default)());
 mongoose_1.default
     .set('strictQuery', true)

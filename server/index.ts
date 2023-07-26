@@ -1,10 +1,24 @@
-import express, {Express} from 'express';
+import express, {Express, Request} from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import ApiRouter from './src/routers/ApiRouter';
 import config from './config/config';
 
 const app: Express = express();
+
+const whitelist = ['http://localhost:3000'];
+
+app.use(
+    cors<Request>({
+        origin: function (origin: string | undefined, callback: (error: Error | null, flag?: boolean) => void) {
+            if ((origin != null && whitelist.indexOf(origin) !== -1) || origin == null) {
+                callback(null, true);
+            } else {
+                callback(new Error('Not allowed by CORS'));
+            }
+        }
+    })
+);
 
 app.options('*', cors());
 
