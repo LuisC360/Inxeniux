@@ -30,7 +30,7 @@ export const roomType: ValueLabelPair[] = [
     }
 ];
 
-export const montlyIncome: ValueLabelPair[] = [
+export const monthlyIncome: ValueLabelPair[] = [
     {
         value: '2500-5000',
         label: '2500-5000'
