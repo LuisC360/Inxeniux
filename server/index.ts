@@ -7,7 +7,7 @@ import config from './config/config';
 
 const app: Express = express();
 
-const whitelist = ['http://localhost:3000'];
+const whitelist = ['http://localhost:3000', 'https://inxeniux-chi.vercel.app'];
 
 app.use(
     cors<Request>({
