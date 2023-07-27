@@ -12,37 +12,31 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteClients = exports.createClient = exports.getAllClients = void 0;
-const Client_1 = __importDefault(require("../models/Client"));
-function getAllClients() {
+exports.deleteInterests = exports.createInterests = exports.getClientInterestsById = void 0;
+const Interests_1 = __importDefault(require("../models/Interests"));
+function getClientInterestsById(interestsId) {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield Client_1.default.find({}).exec();
+        return yield Interests_1.default.findById(interestsId).exec();
     });
 }
-exports.getAllClients = getAllClients;
-function createClient(name, first_last_name, second_last_name, age, gender, address, interests) {
+exports.getClientInterestsById = getClientInterestsById;
+function createInterests(personalInterests, preferredDestinations, roomType, monthlyIncome, yearlyTravels, favoriteBooks) {
     return __awaiter(this, void 0, void 0, function* () {
-        const newClient = {
-            name,
-            first_last_name,
-            second_last_name,
-            age,
-            gender,
-            address,
-            interests
+        const newInterests = {
+            personalInterests,
+            preferredDestinations,
+            roomType,
+            monthlyIncome,
+            yearlyTravels,
+            favoriteBooks
         };
-        return yield Client_1.default.create(newClient);
+        return yield Interests_1.default.create(newInterests);
     });
 }
-exports.createClient = createClient;
-function deleteClients(clientIds) {
+exports.createInterests = createInterests;
+function deleteInterests(interestsId) {
     return __awaiter(this, void 0, void 0, function* () {
-        const ids = [...clientIds];
-        // Delete address, but first check if a user has the same address
-        // for (let a = 0; a < ids.length; a += 1) {}
-        for (let i = 0; i < ids.length; i += 1) {
-            yield Client_1.default.deleteOne({ _id: clientIds[i] });
-        }
+        yield Interests_1.default.deleteOne({ _id: interestsId });
     });
 }
-exports.deleteClients = deleteClients;
+exports.deleteInterests = deleteInterests;

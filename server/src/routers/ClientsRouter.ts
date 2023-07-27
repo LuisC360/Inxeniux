@@ -2,6 +2,7 @@ import express from 'express';
 import {errorCallback} from '../controllers/ErrorController';
 import {createClient, deleteClients, getAllClients} from '../controllers/ClientsController';
 import {compareAddress, createAddress} from '../controllers/AddressController';
+import {createInterests} from '../controllers/InterestsController';
 const router = express.Router();
 
 // get
@@ -17,14 +18,28 @@ router.get('/', async (req, res) => {
 // add
 router.post('/add-client', async (req, res) => {
     try {
-        const {client, address} = req.body;
+        const {client, address, interests} = req.body;
         const idOfSameAddress = await compareAddress(address);
-        console.log(idOfSameAddress);
-        let addressOfClient = undefined;
+        const interestsOfClient = await createInterests(
+            interests.personalInterests,
+            interests.preferredDestinations,
+            interests.roomType,
+            interests.monthlyIncome,
+            interests.yearlyTravels,
+            interests.favoriteBooks
+        );
         if (idOfSameAddress !== '') {
-            createClient(client.name, client.first_last_name, client.second_last_name, client.age, client.gender, idOfSameAddress);
+            createClient(
+                client.name,
+                client.first_last_name,
+                client.second_last_name,
+                client.age,
+                client.gender,
+                idOfSameAddress,
+                interestsOfClient._id
+            );
         } else {
-            addressOfClient = createAddress(
+            const addressOfClient = await createAddress(
                 address.street,
                 address.int_number,
                 address.ext_number,
@@ -38,7 +53,8 @@ router.post('/add-client', async (req, res) => {
                 client.second_last_name,
                 client.age,
                 client.gender,
-                (await addressOfClient)._id
+                addressOfClient._id,
+                interestsOfClient._id
             );
         }
     } catch (error: unknown) {

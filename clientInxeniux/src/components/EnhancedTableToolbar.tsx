@@ -5,7 +5,7 @@ import {useCreateClient} from '../hooks/Clients/useCreateClient';
 import {useDeleteClients} from '../hooks/Clients/useDeleteClients';
 import ModalForm from './ModalForm';
 import DeleteDialog from './DeleteDialog';
-import {Address, Client, CreateClientData} from '../types';
+import {Address, Client, CreateClientData, Interests} from '../types';
 
 interface EnhancedTableToolbarProps {
     numSelected: number;
@@ -26,11 +26,17 @@ export default function EnhancedTableToolbar({numSelected, selected}: EnhancedTa
         setShowDeleteDialog(!showDeleteDialog);
     };
 
-    const handleCreateClient = (client: Client, address: Address, event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
+    const handleCreateClient = (
+        client: Client,
+        address: Address,
+        interests: Interests,
+        event: React.MouseEvent<HTMLDivElement, MouseEvent>
+    ): void => {
         event.preventDefault();
         const clientData: CreateClientData = {
             client,
-            address
+            address,
+            interests
         };
         createClient(clientData);
         setShowModalForm(!showModalForm);

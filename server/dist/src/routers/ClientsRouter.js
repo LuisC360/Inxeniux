@@ -16,6 +16,7 @@ const express_1 = __importDefault(require("express"));
 const ErrorController_1 = require("../controllers/ErrorController");
 const ClientsController_1 = require("../controllers/ClientsController");
 const AddressController_1 = require("../controllers/AddressController");
+const InterestsController_1 = require("../controllers/InterestsController");
 const router = express_1.default.Router();
 // get
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -30,16 +31,15 @@ router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 // add
 router.post('/add-client', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { client, address } = req.body;
+        const { client, address, interests } = req.body;
         const idOfSameAddress = yield (0, AddressController_1.compareAddress)(address);
-        console.log(idOfSameAddress);
-        let addressOfClient = undefined;
+        const interestsOfClient = yield (0, InterestsController_1.createInterests)(interests.personalInterests, interests.preferredDestinations, interests.roomType, interests.monthlyIncome, interests.yearlyTravels, interests.favoriteBooks);
         if (idOfSameAddress !== '') {
-            (0, ClientsController_1.createClient)(client.name, client.first_last_name, client.second_last_name, client.age, client.gender, idOfSameAddress);
+            (0, ClientsController_1.createClient)(client.name, client.first_last_name, client.second_last_name, client.age, client.gender, idOfSameAddress, interestsOfClient._id);
         }
         else {
-            addressOfClient = (0, AddressController_1.createAddress)(address.street, address.int_number, address.ext_number, address.colony, address.municipality, address.state);
-            (0, ClientsController_1.createClient)(client.name, client.first_last_name, client.second_last_name, client.age, client.gender, (yield addressOfClient)._id);
+            const addressOfClient = yield (0, AddressController_1.createAddress)(address.street, address.int_number, address.ext_number, address.colony, address.municipality, address.state);
+            (0, ClientsController_1.createClient)(client.name, client.first_last_name, client.second_last_name, client.age, client.gender, addressOfClient._id, interestsOfClient._id);
         }
     }
     catch (error) {

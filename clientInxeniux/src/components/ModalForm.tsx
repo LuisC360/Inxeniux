@@ -2,12 +2,12 @@ import React, {useState} from 'react';
 import {Dialog, DialogContent} from '@material-ui/core';
 import {Box, Button, Checkbox, FormControlLabel, FormGroup, MenuItem, Stack, TextField, Typography} from '@mui/material';
 import {genders, roomType, monthlyIncome, yearlyTravels, favoriteBooks} from '../constants/constants';
-import {Address, Client} from '../types';
+import {Address, Client, Interests} from '../types';
 
 interface ModalFormProps {
     open: boolean;
     onClosePress: () => void;
-    onCreatePress: (client: Client, address: Address, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+    onCreatePress: (client: Client, address: Address, interests: Interests, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
     clientName?: string;
     clientFirstLastName?: string;
     clientSecondLastName?: string;
@@ -118,8 +118,17 @@ export default function ModalForm({open, onClosePress, onCreatePress}: ModalForm
             municipality,
             state
         };
+        const newInterests: Interests = {
+            _id: '0',
+            personalInterests,
+            preferredDestinations,
+            roomType: houseType,
+            monthlyIncome: income,
+            yearlyTravels: travels,
+            favoriteBooks: books
+        };
 
-        onCreatePress(newClient, newAddress, event);
+        onCreatePress(newClient, newAddress, newInterests, event);
     };
 
     return (
@@ -292,7 +301,7 @@ export default function ModalForm({open, onClosePress, onCreatePress}: ModalForm
                         <Typography marginRight={6}>Destinos Preferidos:</Typography>
                         <FormGroup row style={{justifyContent: 'center'}}>
                             <FormControlLabel
-                                value='start'
+                                value='Desierto'
                                 control={
                                     <Checkbox
                                         checked={preferredDestinations.includes('Desierto')}
@@ -303,7 +312,7 @@ export default function ModalForm({open, onClosePress, onCreatePress}: ModalForm
                                 labelPlacement='end'
                             />
                             <FormControlLabel
-                                value='start'
+                                value='Playa'
                                 control={
                                     <Checkbox
                                         checked={preferredDestinations.includes('Playa')}
@@ -314,7 +323,7 @@ export default function ModalForm({open, onClosePress, onCreatePress}: ModalForm
                                 labelPlacement='end'
                             />
                             <FormControlLabel
-                                value='start'
+                                value='Ciudad'
                                 control={
                                     <Checkbox
                                         checked={preferredDestinations.includes('Ciudad')}
@@ -325,7 +334,7 @@ export default function ModalForm({open, onClosePress, onCreatePress}: ModalForm
                                 labelPlacement='end'
                             />
                             <FormControlLabel
-                                value='start'
+                                value='Montaña'
                                 control={
                                     <Checkbox
                                         checked={preferredDestinations.includes('Montaña')}

@@ -11,7 +11,8 @@ export async function createClient(
     second_last_name: string,
     age: number,
     gender: string,
-    address: string
+    address: string,
+    interests: string
 ) {
     const newClient = {
         name,
@@ -19,7 +20,8 @@ export async function createClient(
         second_last_name,
         age,
         gender,
-        address
+        address,
+        interests
     };
     return await Client.create(newClient);
 }

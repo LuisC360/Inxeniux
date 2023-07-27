@@ -23,10 +23,10 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose" />
 /// <reference types="mongoose/types/inferschematype" />
-export declare function getAllClients(): Promise<(import("mongoose").Document<unknown, {}, import("../types/Client").IClient> & import("../types/Client").IClient & {
+export declare function getClientInterestsById(interestsId: string): Promise<(import("mongoose").Document<unknown, {}, import("../types/Interest").IInterest> & import("../types/Interest").IInterest & {
     _id: import("mongoose").Types.ObjectId;
-})[]>;
-export declare function createClient(name: string, first_last_name: string, second_last_name: string, age: number, gender: string, address: string, interests: string): Promise<import("mongoose").Document<unknown, {}, import("../types/Client").IClient> & import("../types/Client").IClient & {
+}) | null>;
+export declare function createInterests(personalInterests: string[], preferredDestinations: string[], roomType: string, monthlyIncome: string, yearlyTravels: string, favoriteBooks: string): Promise<import("mongoose").Document<unknown, {}, import("../types/Interest").IInterest> & import("../types/Interest").IInterest & {
     _id: import("mongoose").Types.ObjectId;
 }>;
-export declare function deleteClients(clientIds: string[]): Promise<void>;
+export declare function deleteInterests(interestsId: string): Promise<void>;

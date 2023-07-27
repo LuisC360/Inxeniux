@@ -1,4 +1,4 @@
-import mongoose, {Schema, Types} from 'mongoose';
+import mongoose, {Schema} from 'mongoose';
 import {IClient} from '../types/Client';
 
 const ClientSchema = new Schema({
@@ -7,7 +7,8 @@ const ClientSchema = new Schema({
     second_last_name: String,
     age: Number,
     gender: String,
-    address: {type: Schema.Types.ObjectId, ref: 'Address'}
+    address: {type: Schema.Types.ObjectId, ref: 'Address'},
+    interests: {type: Schema.Types.ObjectId, ref: 'Interests'}
 });
 
 const Client = mongoose.model<IClient>('Client', ClientSchema);
