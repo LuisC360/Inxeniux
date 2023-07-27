@@ -26,13 +26,7 @@ export default function EnhancedTableToolbar({numSelected, selected}: EnhancedTa
         setShowDeleteDialog(!showDeleteDialog);
     };
 
-    const handleCreateClient = (
-        client: Client,
-        address: Address,
-        interests: Interests,
-        event: React.MouseEvent<HTMLDivElement, MouseEvent>
-    ): void => {
-        event.preventDefault();
+    const handleCreateClient = async (client: Client, address: Address, interests: Interests): Promise<void> => {
         const clientData: CreateClientData = {
             client,
             address,
@@ -42,7 +36,7 @@ export default function EnhancedTableToolbar({numSelected, selected}: EnhancedTa
         setShowModalForm(!showModalForm);
     };
 
-    const handleDeleteClients = () => {
+    const handleDeleteClients = async (): Promise<void> => {
         deleteClients(selected);
         setShowDeleteDialog(!showDeleteDialog);
     };

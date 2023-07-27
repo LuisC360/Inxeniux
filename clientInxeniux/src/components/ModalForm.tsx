@@ -2,12 +2,13 @@ import React, {useState} from 'react';
 import {Dialog, DialogContent} from '@material-ui/core';
 import {Box, Button, Checkbox, FormControlLabel, FormGroup, MenuItem, Stack, TextField, Typography} from '@mui/material';
 import {genders, roomType, monthlyIncome, yearlyTravels, favoriteBooks} from '../constants/constants';
+import {validateInputs, valitateArrays} from '../utils/validateInputs';
 import {Address, Client, Interests} from '../types';
 
 interface ModalFormProps {
     open: boolean;
     onClosePress: () => void;
-    onCreatePress: (client: Client, address: Address, interests: Interests, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+    onCreatePress: (client: Client, address: Address, interests: Interests) => void;
     clientName?: string;
     clientFirstLastName?: string;
     clientSecondLastName?: string;
@@ -16,6 +17,7 @@ interface ModalFormProps {
 }
 
 export default function ModalForm({open, onClosePress, onCreatePress}: ModalFormProps): JSX.Element {
+    const [showWarning, setShowWarning] = useState(false);
     // User
     const [name, setName] = useState('');
     const [firstLastName, setFirstLastName] = useState('');
@@ -38,6 +40,7 @@ export default function ModalForm({open, onClosePress, onCreatePress}: ModalForm
     const [books, setBooks] = useState(favoriteBooks[0].value);
 
     const handleNumber = (newValue: string, field: string) => {
+        setShowWarning(false);
         const regex = /^[0-9\b]+$/;
         if (field === 'age' && (newValue === '' || (regex.test(newValue) && newValue.length > 0 && newValue.length < 3))) {
             const newAge = parseInt(newValue);
@@ -54,6 +57,7 @@ export default function ModalForm({open, onClosePress, onCreatePress}: ModalForm
     };
 
     const handleTextInput = (newText: string, field: string) => {
+        setShowWarning(false);
         const regexLetters = /^[a-zA-Z\s]+$/;
         if (newText === '' || regexLetters.test(newText)) {
             switch (field) {
@@ -85,6 +89,7 @@ export default function ModalForm({open, onClosePress, onCreatePress}: ModalForm
     };
 
     const handleMultiSelectionChange = (newValue: string, isChecked: boolean, type: string) => {
+        setShowWarning(false);
         if (isChecked) {
             if (type === 'interest') {
                 setPersonalInterests((prevInterests) => [...prevInterests, newValue]);
@@ -100,7 +105,7 @@ export default function ModalForm({open, onClosePress, onCreatePress}: ModalForm
         }
     };
 
-    const handleCreate = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const handleCreate = () => {
         const newClient: Client = {
             _id: '0',
             name,
@@ -128,7 +133,29 @@ export default function ModalForm({open, onClosePress, onCreatePress}: ModalForm
             favoriteBooks: books
         };
 
-        onCreatePress(newClient, newAddress, newInterests, event);
+        const inputs = [
+            name,
+            firstLastName,
+            secondLastName,
+            age,
+            gender,
+            street,
+            extNumber,
+            colony,
+            municipality,
+            state,
+            houseType,
+            income,
+            travels,
+            books
+        ];
+        const valueGroups = [personalInterests, preferredDestinations];
+
+        if (validateInputs(inputs) && valitateArrays(valueGroups)) {
+            onCreatePress(newClient, newAddress, newInterests);
+        } else {
+            setShowWarning(true);
+        }
     };
 
     return (
@@ -137,10 +164,11 @@ export default function ModalForm({open, onClosePress, onCreatePress}: ModalForm
                 <Typography marginBottom={1} variant='h6'>
                     Nuevo cliente
                 </Typography>
+                <Typography marginBottom={1}>Campos marcados con * son obligatorios</Typography>
                 <Box sx={{border: 1, borderRadius: 4, borderColor: '#f08334'}} padding={3} marginBottom={2}>
                     <Typography marginBottom={1}>Generales</Typography>
                     <TextField
-                        label='Nombre'
+                        label='Nombre *'
                         id='outlined-basic'
                         variant='outlined'
                         value={name}
@@ -148,7 +176,7 @@ export default function ModalForm({open, onClosePress, onCreatePress}: ModalForm
                         style={{width: 490, marginBottom: 20}}
                     />
                     <TextField
-                        label='Apellido Paterno'
+                        label='Apellido Paterno * '
                         id='outlined-basic'
                         variant='outlined'
                         value={firstLastName}
@@ -156,7 +184,7 @@ export default function ModalForm({open, onClosePress, onCreatePress}: ModalForm
                         style={{width: 490, marginBottom: 20}}
                     />
                     <TextField
-                        label='Apellido Materno'
+                        label='Apellido Materno *'
                         id='outlined-basic'
                         variant='outlined'
                         value={secondLastName}
@@ -165,7 +193,7 @@ export default function ModalForm({open, onClosePress, onCreatePress}: ModalForm
                     />
                     <FormGroup row style={{justifyContent: 'space-between'}}>
                         <TextField
-                            label='Edad'
+                            label='Edad * '
                             id='outlined-basic'
                             variant='outlined'
                             type='number'
@@ -176,7 +204,7 @@ export default function ModalForm({open, onClosePress, onCreatePress}: ModalForm
                         <TextField
                             id='outlined-basic'
                             select
-                            label='Sexo'
+                            label='Sexo *'
                             value={gender}
                             onChange={(e) => setGender(e.target.value)}
                             style={{flex: 0.4}}
@@ -192,7 +220,7 @@ export default function ModalForm({open, onClosePress, onCreatePress}: ModalForm
                 <Box sx={{border: 1, borderRadius: 4, borderColor: '#f08334'}} padding={3} marginBottom={2}>
                     <Typography marginBottom={1}>Dirección</Typography>
                     <TextField
-                        label='Calle'
+                        label='Calle *'
                         id='outlined-basic'
                         variant='outlined'
                         value={street}
@@ -201,7 +229,7 @@ export default function ModalForm({open, onClosePress, onCreatePress}: ModalForm
                     />
                     <FormGroup row style={{justifyContent: 'space-between', marginBottom: 20}}>
                         <TextField
-                            label='No. Exterior'
+                            label='No. Exterior *'
                             id='outlined-basic'
                             variant='outlined'
                             type='number'
@@ -220,7 +248,7 @@ export default function ModalForm({open, onClosePress, onCreatePress}: ModalForm
                         />
                     </FormGroup>
                     <TextField
-                        label='Colonia'
+                        label='Colonia *'
                         id='outlined-basic'
                         variant='outlined'
                         value={colony}
@@ -229,7 +257,7 @@ export default function ModalForm({open, onClosePress, onCreatePress}: ModalForm
                     />
                     <FormGroup row style={{justifyContent: 'space-between'}}>
                         <TextField
-                            label='Municipio'
+                            label='Municipio *'
                             id='outlined-basic'
                             variant='outlined'
                             value={municipality}
@@ -237,7 +265,7 @@ export default function ModalForm({open, onClosePress, onCreatePress}: ModalForm
                             style={{flex: 0.4}}
                         />
                         <TextField
-                            label='Estado'
+                            label='Estado *'
                             id='outlined-basic'
                             variant='outlined'
                             value={state}
@@ -249,7 +277,7 @@ export default function ModalForm({open, onClosePress, onCreatePress}: ModalForm
                 <Box sx={{border: 1, borderRadius: 4, borderColor: '#f08334'}} padding={3} marginBottom={2}>
                     <Typography marginBottom={1}>Particulares</Typography>
                     <FormGroup row style={{marginBottom: 10}}>
-                        <Typography marginRight={6}>Intereses Personales:</Typography>
+                        <Typography marginRight={6}>Intereses Personales: *</Typography>
                         <FormGroup row style={{justifyContent: 'center'}}>
                             <FormControlLabel
                                 value='Musica'
@@ -298,7 +326,7 @@ export default function ModalForm({open, onClosePress, onCreatePress}: ModalForm
                         </FormGroup>
                     </FormGroup>
                     <FormGroup row style={{marginBottom: 20}}>
-                        <Typography marginRight={6}>Destinos Preferidos:</Typography>
+                        <Typography marginRight={6}>Destinos Preferidos: *</Typography>
                         <FormGroup row style={{justifyContent: 'center'}}>
                             <FormControlLabel
                                 value='Desierto'
@@ -350,7 +378,7 @@ export default function ModalForm({open, onClosePress, onCreatePress}: ModalForm
                         <TextField
                             id='outlined-basic'
                             select
-                            label='Tipo de casa'
+                            label='Tipo de casa *'
                             value={houseType}
                             onChange={(e) => setHouseType(e.target.value)}
                             style={{flex: 0.4}}
@@ -364,7 +392,7 @@ export default function ModalForm({open, onClosePress, onCreatePress}: ModalForm
                         <TextField
                             id='outlined-basic'
                             select
-                            label='Ingreso mensual'
+                            label='Ingreso mensual *'
                             value={income}
                             onChange={(e) => setIncome(e.target.value)}
                             style={{flex: 0.4}}
@@ -380,7 +408,7 @@ export default function ModalForm({open, onClosePress, onCreatePress}: ModalForm
                         <TextField
                             id='outlined-basic'
                             select
-                            label='Viajes al año'
+                            label='Viajes al año *'
                             value={travels}
                             onChange={(e) => setTravels(e.target.value)}
                             style={{flex: 0.4}}
@@ -394,7 +422,7 @@ export default function ModalForm({open, onClosePress, onCreatePress}: ModalForm
                         <TextField
                             id='outlined-basic'
                             select
-                            label='Libros Favoritos'
+                            label='Libros Favoritos *'
                             value={books}
                             onChange={(e) => setBooks(e.target.value)}
                             style={{flex: 0.4}}
@@ -407,7 +435,12 @@ export default function ModalForm({open, onClosePress, onCreatePress}: ModalForm
                         </TextField>
                     </FormGroup>
                 </Box>
-                <Stack spacing={2} direction='row' flexDirection={'row-reverse'} onClick={(e) => handleCreate(e)}>
+                {showWarning && (
+                    <Typography variant='h6' color='red'>
+                        Faltan llenar campos obligatorios
+                    </Typography>
+                )}
+                <Stack spacing={2} direction='row' flexDirection={'row-reverse'} onClick={handleCreate}>
                     <Button variant='contained' style={{marginLeft: 4}}>
                         Guardar
                     </Button>

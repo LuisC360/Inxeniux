@@ -27,7 +27,7 @@ export function useCreateClient() {
 
     const mutation = useMutation(createClient, {
         onSuccess: async () => {
-            await queryClient.invalidateQueries('clients');
+            await queryClient.invalidateQueries(['clients', 'interests', 'addresses']);
             setIsCreating(false);
         }
     });
