@@ -26,6 +26,15 @@
 export declare function getAllClients(): Promise<(import("mongoose").Document<unknown, {}, import("../types/Client").IClient> & import("../types/Client").IClient & {
     _id: import("mongoose").Types.ObjectId;
 })[]>;
+export declare function getClientById(clientId: string): Promise<(import("mongoose").Document<unknown, {}, import("../types/Client").IClient> & import("../types/Client").IClient & {
+    _id: import("mongoose").Types.ObjectId;
+}) | null>;
+export declare function getClients(clientIds: string[]): Promise<(import("mongoose").Document<unknown, {}, import("../types/Client").IClient> & import("../types/Client").IClient & {
+    _id: import("mongoose").Types.ObjectId;
+})[]>;
+export declare function getClientsByAddressId(addressId: string): Promise<(import("mongoose").Document<unknown, {}, import("../types/Client").IClient> & import("../types/Client").IClient & {
+    _id: import("mongoose").Types.ObjectId;
+})[]>;
 export declare function createClient(name: string, first_last_name: string, second_last_name: string, age: number, gender: string, address: string, interests: string): Promise<import("mongoose").Document<unknown, {}, import("../types/Client").IClient> & import("../types/Client").IClient & {
     _id: import("mongoose").Types.ObjectId;
 }>;
