@@ -1,4 +1,4 @@
-import mongoose, {Schema, Types} from 'mongoose';
+import mongoose, {Schema} from 'mongoose';
 import {IAddress} from '../types/Address';
 
 const AdressSchema = new Schema({

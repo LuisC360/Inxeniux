@@ -23,10 +23,15 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose" />
 /// <reference types="mongoose/types/inferschematype" />
-export declare function getAllClients(): Promise<(import("mongoose").Document<unknown, {}, import("../types/Client").IClient> & import("../types/Client").IClient & {
+import AddressInterface from '../interfaces/Address';
+export declare function getAddressById(addressId: string): Promise<(import("mongoose").Document<unknown, {}, import("../types/Address").IAddress> & import("../types/Address").IAddress & {
+    _id: import("mongoose").Types.ObjectId;
+}) | null>;
+export declare function getAllAddresses(): Promise<(import("mongoose").Document<unknown, {}, import("../types/Address").IAddress> & import("../types/Address").IAddress & {
     _id: import("mongoose").Types.ObjectId;
 })[]>;
-export declare function createClient(name: string, first_last_name: string, second_last_name: string, age: number, gender: string, address: string): Promise<import("mongoose").Document<unknown, {}, import("../types/Client").IClient> & import("../types/Client").IClient & {
+export declare function createAddress(street: string, int_number: string, ext_number: string, colony: string, municipality: string, state: string): Promise<import("mongoose").Document<unknown, {}, import("../types/Address").IAddress> & import("../types/Address").IAddress & {
     _id: import("mongoose").Types.ObjectId;
 }>;
-export declare function deleteClients(clientIds: string[]): Promise<void>;
+export declare function deleteAddress(addressId: string): Promise<void>;
+export declare function compareAddress(newAddress: AddressInterface): Promise<any>;

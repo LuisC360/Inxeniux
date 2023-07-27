@@ -20,14 +20,15 @@ function getAllClients() {
     });
 }
 exports.getAllClients = getAllClients;
-function createClient(name, first_last_name, second_last_name, age, gender) {
+function createClient(name, first_last_name, second_last_name, age, gender, address) {
     return __awaiter(this, void 0, void 0, function* () {
         const newClient = {
             name,
             first_last_name,
             second_last_name,
             age,
-            gender
+            gender,
+            address
         };
         return yield Client_1.default.create(newClient);
     });
@@ -36,6 +37,8 @@ exports.createClient = createClient;
 function deleteClients(clientIds) {
     return __awaiter(this, void 0, void 0, function* () {
         const ids = [...clientIds];
+        // Delete address, but first check if a user has the same address
+        // for (let a = 0; a < ids.length; a += 1) {}
         for (let i = 0; i < ids.length; i += 1) {
             yield Client_1.default.deleteOne({ _id: clientIds[i] });
         }

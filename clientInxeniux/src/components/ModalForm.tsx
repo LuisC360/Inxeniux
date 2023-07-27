@@ -2,12 +2,17 @@ import React, {useState} from 'react';
 import {Dialog, DialogContent} from '@material-ui/core';
 import {Box, Button, Checkbox, FormControlLabel, FormGroup, MenuItem, Stack, TextField, Typography} from '@mui/material';
 import {genders, roomType, monthlyIncome, yearlyTravels, favoriteBooks} from '../constants/constants';
-import {Client} from '../types';
+import {Address, Client} from '../types';
 
 interface ModalFormProps {
     open: boolean;
     onClosePress: () => void;
-    onCreatePress: (client: Client, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+    onCreatePress: (client: Client, address: Address, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+    clientName?: string;
+    clientFirstLastName?: string;
+    clientSecondLastName?: string;
+    clientAge?: string;
+    clientGender?: string;
 }
 
 export default function ModalForm({open, onClosePress, onCreatePress}: ModalFormProps): JSX.Element {
@@ -98,14 +103,23 @@ export default function ModalForm({open, onClosePress, onCreatePress}: ModalForm
     const handleCreate = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         const newClient: Client = {
             _id: '0',
-            name: name,
+            name,
             first_last_name: firstLastName,
             second_last_name: secondLastName,
-            age: age,
-            gender: gender
+            age,
+            gender
+        };
+        const newAddress: Address = {
+            _id: '0',
+            street,
+            int_number: intNumber.toString(),
+            ext_number: extNumber.toString(),
+            colony,
+            municipality,
+            state
         };
 
-        onCreatePress(newClient, event);
+        onCreatePress(newClient, newAddress, event);
     };
 
     return (
